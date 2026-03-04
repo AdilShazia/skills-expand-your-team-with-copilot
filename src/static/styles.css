@@ -476,6 +476,84 @@ footer {
   font-size: 0.8rem;
 }
 
+/* Share section */
+.share-section {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.share-button {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none;
+}
+
+.share-button:hover {
+  background-color: var(--background);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.share-panel {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
+
+.share-panel.open {
+  display: flex;
+}
+
+.share-option {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  border: none;
+  color: white;
+  transition: opacity 0.2s;
+  box-shadow: none;
+}
+
+.share-option:hover {
+  opacity: 0.85;
+}
+
+.share-twitter {
+  background-color: #000000;
+}
+
+.share-facebook {
+  background-color: #1877f2;
+}
+
+.share-email {
+  background-color: #6c757d;
+}
+
+.share-copy {
+  background-color: var(--primary);
+}
+
+.share-copy-success {
+  font-size: 0.72rem;
+  color: var(--success);
+  min-height: 1em;
+  text-align: center;
+}
+
 /* Search and Filter Components - Updated for Sidebar */
 .search-box {
   display: flex;

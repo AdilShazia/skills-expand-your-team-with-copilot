@@ -569,6 +569,16 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         }
       </div>
+      <div class="share-section">
+        <button class="share-button" aria-label="Share this activity">🔗 Share</button>
+        <div class="share-panel">
+          <button class="share-option share-twitter" data-platform="twitter">𝕏 Twitter</button>
+          <button class="share-option share-facebook" data-platform="facebook">f Facebook</button>
+          <button class="share-option share-email" data-platform="email">✉ Email</button>
+          <button class="share-option share-copy" data-platform="copy">📋 Copy Link</button>
+        </div>
+        <span class="share-copy-success"></span>
+      </div>
     `;
 
     // Add click handlers for delete buttons
@@ -586,6 +596,61 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    // Add share functionality
+    const shareButton = activityCard.querySelector(".share-button");
+    const sharePanel = activityCard.querySelector(".share-panel");
+    const shareCopySuccess = activityCard.querySelector(".share-copy-success");
+    const shareText = `Check out "${name}" at Mergington High School! ${details.description}`;
+    const baseUrl = window.location.href.split("?")[0];
+    const shareUrl = `${baseUrl}?activity=${encodeURIComponent(name)}`;
+
+    shareButton.addEventListener("click", () => {
+      if (navigator.share) {
+        navigator.share({ title: name, text: shareText, url: shareUrl }).catch(() => {});
+        return;
+      }
+      sharePanel.classList.toggle("open");
+      shareCopySuccess.textContent = "";
+    });
+
+    activityCard.querySelectorAll(".share-option").forEach((option) => {
+      option.addEventListener("click", () => {
+        const platform = option.dataset.platform;
+        const encodedText = encodeURIComponent(shareText);
+        const encodedUrl = encodeURIComponent(shareUrl);
+
+        if (platform === "twitter") {
+          window.open(
+            `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+            "_blank",
+            "noopener,noreferrer"
+          );
+        } else if (platform === "facebook") {
+          window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+            "_blank",
+            "noopener,noreferrer"
+          );
+        } else if (platform === "email") {
+          const subject = encodeURIComponent(`Check out ${name} at Mergington High School!`);
+          const body = encodeURIComponent(`${shareText}\n\nLearn more: ${shareUrl}`);
+          window.open(`mailto:?subject=${subject}&body=${body}`);
+        } else if (platform === "copy") {
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            shareCopySuccess.textContent = "Link copied!";
+            setTimeout(() => {
+              shareCopySuccess.textContent = "";
+            }, 2000);
+          }).catch(() => {
+            shareCopySuccess.textContent = "Copy failed. Please copy manually.";
+            setTimeout(() => {
+              shareCopySuccess.textContent = "";
+            }, 3000);
+          });
+        }
+      });
+    });
 
     activitiesList.appendChild(activityCard);
   }
